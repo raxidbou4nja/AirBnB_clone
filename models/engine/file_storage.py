@@ -1,6 +1,14 @@
 #!/usr/bin/python3
-import json
+"""
+Module: file_storage.py
+
+Defines a `FileStorage` class.
+"""
+import os
 from os.path import exists
+import json
+from models.base_model import BaseModel
+
 
 class FileStorage:
     __file_path = "file.json"
@@ -12,6 +20,7 @@ class FileStorage:
     def new(self, obj):
         key = "{}.{}".format(obj.__class__.__name__, obj.id)
         FileStorage.__objects[key] = obj
+        self.save()
 
     def save(self):
         obj_dict = {}
