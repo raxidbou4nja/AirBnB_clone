@@ -7,7 +7,7 @@ import shlex
 import models
 from models.base_model import BaseModel
 import datetime
-
+import re
 
 class HBNBCommand(cmd.Cmd):
     prompt = "(hbnb) "
@@ -52,6 +52,16 @@ class HBNBCommand(cmd.Cmd):
                 print("** no instance found **")
             else:
                 print(models.storage.all()[key])
+
+    def do_count(self, arg):
+        """Count the number of instances of a class"""
+        class_name = arg
+        if class_name not in models.__dict__:
+            print("** class doesn't exist **")
+            return
+        count = sum(1 for key in models.storage.all() if key.startswith(class_name + "."))
+        print(count)
+
 
     def do_destroy(self, arg):
         """Deletes an instance based on the class name and id"""
@@ -104,6 +114,20 @@ class HBNBCommand(cmd.Cmd):
                 instance.save()
             else:
                 print("** attribute doesn't exist or cannot be updated **")
+
+    def default(self, line):
+        """Called on an unrecognized command."""
+        pattern = r"(\w+)\.(\w+)\(.*\)"
+        match = re.match(pattern, line)
+        if match:
+            class_name = match.group(1)
+            method_name = match.group(2)
+            if method_name == "all":
+                self.do_all(class_name)
+            if method_name == "count":
+                self.do_count(class_name)
+        else:
+            print("** Unknown syntax: {} **".format(line))
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
