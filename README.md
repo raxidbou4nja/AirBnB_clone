@@ -1,4 +1,3 @@
-```markdown
 # AirBnB Console Project
 
 This project is an implementation of a command-line interface (CLI) for an AirBnB clone. The command interpreter allows users to interact with and manipulate instances of various classes, such as `BaseModel` and its subclasses, in a persistent storage system. The implementation follows the specifications outlined in the project requirements.
@@ -93,4 +92,3 @@ For a list of all contributors, please refer to the [AUTHORS](AUTHORS) file.
 ### License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-```
