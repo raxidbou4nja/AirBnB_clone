@@ -51,7 +51,7 @@ class HBNBCommand(cmd.Cmd):
             if key not in models.storage.all():
                 print("** no instance found **")
             else:
-                print(storage.all()[key])
+                print(models.storage.all()[key])
 
     def do_destroy(self, arg):
         """Deletes an instance based on the class name and id"""
