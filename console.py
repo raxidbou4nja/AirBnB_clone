@@ -133,11 +133,11 @@ class HBNBCommand(cmd.Cmd):
 
         if match_all:
             class_name = match_all.group(1)
-            self.do_all("{} {}".format(class_name))
+            self.do_all("{}".format(class_name))
 
         elif match_count:
             class_name = match_count.group(1)
-            self.do_count("{} {}".format(class_name))
+            self.do_count("{}".format(class_name))
 
         elif match_show:
             class_name = match_show.group(1)
