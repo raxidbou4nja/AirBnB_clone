@@ -122,7 +122,7 @@ class HBNBCommand(cmd.Cmd):
         pattern_show = r"(\w+)\.show\([\'\"]?([^\'\"]+)[\'\"]?\)"
         pattern_destroy = r"(\w+)\.destroy\([\'\"]?([^\'\"]+)[\'\"]?\)"
         pattern_update_dict = r'(\w+)\.update\([\'"]?([^\'"]+)[\'"]?,\s*({.*})\)'
-        pattern_update_attr = r'(\w+)\.update\((?:[\'\"]?([^"]+)[\'\"]?(?:, [\'\"]?([^"]+)[\'\"]?)?(?:, [\'\"]?([^"]+)[\'\"]?)?)?\)'
+        pattern_update_attr = r'(\w+)\.update\((?:[\'\"]?([^",]+)[\'\"]?(?:\s*,\s*[\'\"]?([^",]+)[\'\"]?)?(?:\s*,\s*[\'\"]?([^",]+)[\'\"]?)?)?\)'
 
         match_all = re.match(pattern_all, line)
         match_count = re.match(pattern_count, line)
