@@ -121,15 +121,15 @@ class HBNBCommand(cmd.Cmd):
         pattern_count = r"(\w+)\.count\(\)"
         pattern_show = r"(\w+)\.show\([\'\"]?([^\'\"]+)[\'\"]?\)"
         pattern_destroy = r"(\w+)\.destroy\([\'\"]?([^\'\"]+)[\'\"]?\)"
-        pattern_update_attr = r'(\w+)\.update\("([^"]+)", "([^"]+)", "([^"]+)"\)'
         pattern_update_dict = r'(\w+)\.update\([\'"]?([^\'"]+)[\'"]?,\s*({.*})\)'
+        pattern_update_attr = r'(\w+)\.update\((?:"([^"]+)"(?:, "([^"]+)")?(?:, "([^"]+)")?)?\)'
 
         match_all = re.match(pattern_all, line)
         match_count = re.match(pattern_count, line)
         match_show = re.match(pattern_show, line)
         match_destroy = re.match(pattern_destroy, line)
-        match_update_attr = re.match(pattern_update_attr, line)
         match_update_dict = re.match(pattern_update_dict, line)
+        match_update_attr = re.match(pattern_update_attr, line)
 
         if match_all:
             class_name = match_all.group(1)
@@ -149,18 +149,21 @@ class HBNBCommand(cmd.Cmd):
             instance_id = match_destroy.group(2)
             self.do_destroy("{} {}".format(class_name, instance_id))
 
-        elif match_update_attr:
-            class_name = match_update_attr.group(1)
-            instance_id = match_update_attr.group(2)
-            attribute_name = match_update_attr.group(3)
-            attribute_value = match_update_attr.group(4)
-            self.do_update("{} {} {} {}".format(class_name, instance_id, attribute_name, attribute_value))
 
         elif match_update_dict:
             class_name = match_update_dict.group(1)
             instance_id = match_update_dict.group(2)
             dict_representation = match_update_dict.group(3)
             self.do_update("{} {} {}".format(class_name, instance_id, dict_representation))
+
+
+        elif match_update_attr:
+            class_name = match_update_attr.group(1)
+            instance_id = match_update_attr.group(2) if match_update_attr.group(2) else ""
+            attribute_name = match_update_attr.group(3) if match_update_attr.group(3) else ""
+            attribute_value = match_update_attr.group(4) if match_update_attr.group(4) else ""
+            self.do_update("{} {} {} {}".format(class_name, instance_id, attribute_name, attribute_value))
+
 
         else:
             print("** Unknown syntax: {} **".format(line))
