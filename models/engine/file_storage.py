@@ -13,6 +13,7 @@ from models.base_model import BaseModel
 class FileStorage:
     __file_path = "file.json"
     __objects = {}
+    classes = {}
 
     def all(self):
         return FileStorage.__objects
@@ -37,3 +38,5 @@ class FileStorage:
                     class_name, obj_id = key.split('.')
                     obj_instance = eval(class_name)(**value)
                     FileStorage.__objects[key] = obj_instance
+
+FileStorage.classes['BaseModel'] = BaseModel
