@@ -117,15 +117,51 @@ class HBNBCommand(cmd.Cmd):
 
     def default(self, line):
         """Called on an unrecognized command."""
-        pattern = r"(\w+)\.(\w+)\(.*\)"
-        match = re.match(pattern, line)
-        if match:
-            class_name = match.group(1)
-            method_name = match.group(2)
-            if method_name == "all":
-                self.do_all(class_name)
-            if method_name == "count":
-                self.do_count(class_name)
+        pattern_all = r"(\w+)\.all\(\)"
+        pattern_count = r"(\w+)\.count\(\)"
+        pattern_show = r"(\w+)\.show\([\'\"]?([a-f0-9-]+)[\'\"]?\)"
+        pattern_destroy = r"(\w+)\.destroy\([\'\"]?([a-f0-9-]+)[\'\"]?\)"
+        pattern_update_attr = r"(\w+)\.update\([\'\"]?([a-f0-9-]+)[\'\"]?,\s*'(\w+)',\s*'([^']*)'\)"
+        pattern_update_dict = r"(\w+)\.update\([\'\"]?([a-f0-9-]+)[\'\"]?,\s*({.*})\)"
+
+        match_all = re.match(pattern_all, line)
+        match_count = re.match(pattern_count, line)
+        match_show = re.match(pattern_show, line)
+        match_destroy = re.match(pattern_destroy, line)
+        match_update_attr = re.match(pattern_update_attr, line)
+        match_update_dict = re.match(pattern_update_dict, line)
+
+        if match_all:
+            class_name = match_all.group(1)
+            self.do_all("{} {}".format(class_name))
+
+        elif match_count:
+            class_name = match_count.group(1)
+            self.do_count("{} {}".format(class_name))
+
+        elif match_show:
+            class_name = match_show.group(1)
+            instance_id = match_show.group(2)
+            self.do_show("{} {}".format(class_name, instance_id))
+
+        elif match_destroy:
+            class_name = match_destroy.group(1)
+            instance_id = match_destroy.group(2)
+            self.do_destroy("{} {}".format(class_name, instance_id))
+
+        elif match_update_attr:
+            class_name = match_update_attr.group(1)
+            instance_id = match_update_attr.group(2)
+            attribute_name = match_update_attr.group(3)
+            attribute_value = match_update_attr.group(4)
+            self.do_update("{} {} {} {}".format(class_name, instance_id, attribute_name, attribute_value))
+
+        elif match_update_dict:
+            class_name = match_update_dict.group(1)
+            instance_id = match_update_dict.group(2)
+            dict_representation = match_update_dict.group(3)
+            self.do_update("{} {} {}".format(class_name, instance_id, dict_representation))
+
         else:
             print("** Unknown syntax: {} **".format(line))
 
