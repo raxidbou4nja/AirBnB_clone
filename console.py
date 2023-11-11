@@ -80,6 +80,19 @@ class HBNBCommand(cmd.Cmd):
             instances = [str(instance) for key, instance in models.storage.all().items() if not args or key.split('.')[0] == args[0]]
             print(instances)
 
+    def do_count(self, arg):
+        """Count the number of instances of a class"""
+        args = shlex.split(arg)
+        if not args:
+            print("** class name missing **")
+        elif args[0] not in models.storage.classes:
+            print("** class doesn't exist **")
+        else:
+            class_name = args[0]
+            count = sum(1 for key in models.storage.all() if key.startswith(class_name + "."))
+            print(count)
+
+
     def do_update(self, arg):
         """Updates an instance based on the class name and id"""
         args = shlex.split(arg)
