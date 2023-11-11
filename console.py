@@ -119,10 +119,10 @@ class HBNBCommand(cmd.Cmd):
         """Called on an unrecognized command."""
         pattern_all = r"(\w+)\.all\(\)"
         pattern_count = r"(\w+)\.count\(\)"
-        pattern_show = r"(\w+)\.show\([\'\"]?([a-f0-9-]+)[\'\"]?\)"
-        pattern_destroy = r"(\w+)\.destroy\([\'\"]?([a-f0-9-]+)[\'\"]?\)"
-        pattern_update_attr = r"(\w+)\.update\([\'\"]?([a-f0-9-]+)[\'\"]?,\s*'(\w+)',\s*'([^']*)'\)"
-        pattern_update_dict = r"(\w+)\.update\([\'\"]?([a-f0-9-]+)[\'\"]?,\s*({.*})\)"
+        pattern_show = r"(\w+)\.show\([\'\"]?([^\'\"]+)[\'\"]?\)"
+        pattern_destroy = r"(\w+)\.destroy\([\'\"]?([^\'\"]+)[\'\"]?\)"
+        pattern_update_attr = r"(\w+)\.update\([\'\"]?([^\'\"]+)[\'\"]?,\s*'(\w+)',\s*'([^']*)'\)"
+        pattern_update_dict = r"(\w+)\.update\([\'\"]?([^\'\"]+)[\'\"]?,\s*({.*})\)"
 
         match_all = re.match(pattern_all, line)
         match_count = re.match(pattern_count, line)
