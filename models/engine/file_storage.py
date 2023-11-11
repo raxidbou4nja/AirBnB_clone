@@ -8,6 +8,7 @@ import os
 from os.path import exists
 import json
 from models.base_model import BaseModel
+from models.user import User
 
 
 class FileStorage:
@@ -40,3 +41,4 @@ class FileStorage:
                     FileStorage.__objects[key] = obj_instance
 
 FileStorage.classes['BaseModel'] = BaseModel
+FileStorage.classes['User'] = User

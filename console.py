@@ -6,6 +6,7 @@ import cmd
 import shlex
 import models
 from models.base_model import BaseModel
+import datetime
 
 
 class HBNBCommand(cmd.Cmd):
