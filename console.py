@@ -7,6 +7,7 @@ import shlex
 import models
 from models.base_model import BaseModel
 
+
 class HBNBCommand(cmd.Cmd):
     prompt = "(hbnb) "
 
@@ -97,11 +98,11 @@ class HBNBCommand(cmd.Cmd):
             instance = models.storage.all()[key]
             attribute = args[2]
             value = args[3]
-            if hasattr(instance, attribute):
+            if hasattr(instance, attribute) and attribute not in ['id', 'created_at', 'updated_at']:
                 setattr(instance, attribute, type(getattr(instance, attribute))(value))
                 instance.save()
             else:
-                print("** attribute doesn't exist **")
+                print("** attribute doesn't exist or cannot be updated **")
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
