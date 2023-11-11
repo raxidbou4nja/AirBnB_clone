@@ -9,6 +9,7 @@ from models.base_model import BaseModel
 import datetime
 import re
 
+
 class HBNBCommand(cmd.Cmd):
     prompt = "(hbnb) "
 
@@ -98,12 +99,19 @@ class HBNBCommand(cmd.Cmd):
             key = "{}.{}".format(args[0], args[1])
             instance = models.storage.all()[key]
             attribute = args[2]
+
+            # Extracting the value, handling spaces in string arguments
             value = args[3]
+            if value[0] == '"' and value[-1] == '"':
+                value = value[1:-1]
+
             if hasattr(instance, attribute) and attribute not in ['id', 'created_at', 'updated_at']:
+                # Only update if the attribute exists and is not one of the restricted ones
                 setattr(instance, attribute, type(getattr(instance, attribute))(value))
                 instance.save()
             else:
                 print("** attribute doesn't exist or cannot be updated **")
+
 
     def default(self, line):
         """Called on an unrecognized command."""
