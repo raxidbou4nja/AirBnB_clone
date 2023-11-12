@@ -11,7 +11,9 @@ class BaseModel:
             for key, value in kwargs.items():
                 if key != '__class__':
                     if key in ['created_at', 'updated_at']:
-                        value = datetime.strptime(value, '%Y-%m-%dT%H:%M:%S.%f')
+                        value = datetime.strptime(
+                            value, '%Y-%m-%dT%H:%M:%S.%f'
+                        )
                     setattr(self, key, value)
             if 'id' not in kwargs:
                 self.id = str(uuid.uuid4())
@@ -26,7 +28,9 @@ class BaseModel:
             models.storage.new(self)
 
     def __str__(self):
-        return "[{}] ({}) {}".format(self.__class__.__name__, self.id, self.__dict__)
+        return "[{}] ({}) {}".format(
+            self.__class__.__name__, self.id, self.__dict__
+        )
 
     def save(self):
         self.updated_at = datetime.now()
