@@ -14,3 +14,4 @@ class Amenity(BaseModel):
     def __init__(self, *args, **kwargs):
         """Initialization method for Amenity"""
         super().__init__(*args, **kwargs)
+        
