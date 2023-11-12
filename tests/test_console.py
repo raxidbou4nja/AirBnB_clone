@@ -65,3 +65,40 @@ class TestHBNBCommand(unittest.TestCase):
         output = self.mock_stdout.getvalue().strip()
 
         self.assertTrue(output.startswith(""))
+
+    def test_show_command(self):
+        with patch('sys.stdout', self.mock_stdout):
+            self.console.onecmd("create BaseModel")
+            output = self.mock_stdout.getvalue().strip()
+
+            instance_id = output.split()[0]
+
+            self.console.onecmd("show BaseModel {}".format(instance_id))
+
+        self.assertIn(instance_id, self.mock_stdout.getvalue().strip())
+
+    def test_all_command(self):
+        with patch('sys.stdout', self.mock_stdout):
+            self.console.onecmd("create BaseModel")
+            output = self.mock_stdout.getvalue().strip()
+
+            instance_id = output.split()[0]
+
+            self.console.onecmd("all BaseModel")
+
+        self.assertIn(instance_id, self.mock_stdout.getvalue().strip())
+
+    def test_count_command(self):
+        with patch('sys.stdout', self.mock_stdout):
+            # Create two new BaseModel instances
+            self.console.onecmd("create BaseModel")
+            self.console.onecmd("create BaseModel")
+            output = self.mock_stdout.getvalue().strip()
+
+            self.console.onecmd("count BaseModel")
+
+        self.assertIn("2", self.mock_stdout.getvalue().strip())
+
+
+if __name__ == '__main__':
+    unittest.main()
