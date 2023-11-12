@@ -1,6 +1,21 @@
 #!/usr/bin/python3
 """
-Console Module
+File: Console.py
+Path: app/Console.py
+Module: Console
+Description: simple console application with various states.
+
+--- States ---
+    do_quit()
+    do_EOF()
+    emptyline()
+    do_create()
+    do_show()
+    do_destroy()
+    do_all()
+    do_count()
+    do_update()
+    default()
 """
 import cmd
 import shlex
@@ -14,20 +29,16 @@ class HBNBCommand(cmd.Cmd):
     prompt = "(hbnb) "
 
     def do_quit(self, arg):
-        """Quit command to exit the program"""
         return True
 
     def do_EOF(self, arg):
-        """Exit the program on EOF"""
-        print("")  # Print a new line for better formatting
+        print("")
         return True
 
     def emptyline(self):
-        """Do nothing on an empty line"""
         pass
 
     def do_create(self, arg):
-        """Create a new instance of BaseModel"""
         args = shlex.split(arg)
         if not args:
             print("** class name missing **")
@@ -39,7 +50,6 @@ class HBNBCommand(cmd.Cmd):
             print(new_instance.id)
 
     def do_show(self, arg):
-        """Prints the string representation of an instance"""
         args = shlex.split(arg)
         if not args:
             print("** class name missing **")
@@ -55,7 +65,6 @@ class HBNBCommand(cmd.Cmd):
                 print(models.storage.all()[key])
 
     def do_destroy(self, arg):
-        """Deletes an instance based on the class name and id"""
         args = shlex.split(arg)
         if not args:
             print("** class name missing **")
@@ -72,7 +81,6 @@ class HBNBCommand(cmd.Cmd):
                 models.storage.save()
 
     def do_all(self, arg):
-        """Prints all string representation of all instances"""
         args = shlex.split(arg)
         if args and args[0] not in models.storage.classes:
             print("** class doesn't exist **")
@@ -85,7 +93,6 @@ class HBNBCommand(cmd.Cmd):
             print(instances)
 
     def do_count(self, arg):
-        """Count the number of instances of a class"""
         args = shlex.split(arg)
         if not args:
             print("** class name missing **")
@@ -101,7 +108,6 @@ class HBNBCommand(cmd.Cmd):
             print(count)
 
     def do_update(self, arg):
-        """Updates an instance based on the class name and id"""
         args = shlex.split(arg)
         if not args:
             print("** class name missing **")
@@ -120,7 +126,6 @@ class HBNBCommand(cmd.Cmd):
             instance = models.storage.all()[key]
             attribute = args[2]
 
-            # Extracting the value, handling spaces in string arguments
             value = args[3]
             if value[0] == '"' and value[-1] == '"':
                 value = value[1:-1]
@@ -128,8 +133,6 @@ class HBNBCommand(cmd.Cmd):
                 hasattr(instance, attribute) and
                 attribute not in ['id', 'created_at', 'updated_at']
             ):
-                # Only update if the attribute
-                # exists and is not one of the restricted ones
                 setattr(
                     instance,
                     attribute,
@@ -140,7 +143,6 @@ class HBNBCommand(cmd.Cmd):
                 print("** attribute doesn't exist or cannot be updated **")
 
     def default(self, line):
-        """Called on an unrecognized command."""
         pattern_all = r"(\w+)\.all\(\)"
         pattern_count = r"(\w+)\.count\(\)"
         pattern_show = r"(\w+)\.show\([\'\"]?([^\'\"]+)[\'\"]?\)"

@@ -1,9 +1,17 @@
 #!/usr/bin/python3
 """
-Module: file_storage.py
+File: File_Storage.py
+Path: app/models/engine/File_Storage.py
+Module: FileStorage
+Description: file to storage data in file.json
 
-Defines a `FileStorage` class.
+--- States ---
+    all()
+    new()
+    save()
+    reload()
 """
+
 import os
 from os.path import exists
 import json
