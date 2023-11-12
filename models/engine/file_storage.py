@@ -15,6 +15,7 @@ from models.amenity import Amenity
 from models.place import Place
 from models.review import Review
 
+
 class FileStorage:
     __file_path = "file.json"
     __objects = {}
@@ -37,12 +38,15 @@ class FileStorage:
 
     def reload(self):
         if exists(FileStorage.__file_path):
-            with open(FileStorage.__file_path, mode='r', encoding='utf-8') as file:
+            with open(
+                FileStorage.__file_path, mode='r', encoding='utf-8'
+            ) as file:
                 obj_dict = json.load(file)
                 for key, value in obj_dict.items():
                     class_name, obj_id = key.split('.')
                     obj_instance = eval(class_name)(**value)
                     FileStorage.__objects[key] = obj_instance
+
 
 FileStorage.classes['BaseModel'] = BaseModel
 FileStorage.classes['User'] = User
