@@ -77,7 +77,11 @@ class HBNBCommand(cmd.Cmd):
         if args and args[0] not in models.storage.classes:
             print("** class doesn't exist **")
         else:
-            instances = [str(instance) for key, instance in models.storage.all().items() if not args or key.split('.')[0] == args[0]]
+            instances = [
+                str(instance)
+                for key, instance in models.storage.all().items()
+                if not args or key.split('.')[0] == args[0]
+            ]
             print(instances)
 
     def do_count(self, arg):
@@ -89,9 +93,12 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
         else:
             class_name = args[0]
-            count = sum(1 for key in models.storage.all() if key.startswith(class_name + "."))
+            count = sum(
+                1
+                for key in models.storage.all()
+                if key.startswith(class_name + ".")
+            )
             print(count)
-
 
     def do_update(self, arg):
         """Updates an instance based on the class name and id"""
@@ -117,14 +124,20 @@ class HBNBCommand(cmd.Cmd):
             value = args[3]
             if value[0] == '"' and value[-1] == '"':
                 value = value[1:-1]
-
-            if hasattr(instance, attribute) and attribute not in ['id', 'created_at', 'updated_at']:
-                # Only update if the attribute exists and is not one of the restricted ones
-                setattr(instance, attribute, type(getattr(instance, attribute))(value))
+            if (
+                hasattr(instance, attribute) and
+                attribute not in ['id', 'created_at', 'updated_at']
+            ):
+                # Only update if the attribute
+                # exists and is not one of the restricted ones
+                setattr(
+                    instance,
+                    attribute,
+                    type(getattr(instance, attribute))(value)
+                )
                 instance.save()
             else:
                 print("** attribute doesn't exist or cannot be updated **")
-
 
     def default(self, line):
         """Called on an unrecognized command."""
@@ -132,8 +145,16 @@ class HBNBCommand(cmd.Cmd):
         pattern_count = r"(\w+)\.count\(\)"
         pattern_show = r"(\w+)\.show\([\'\"]?([^\'\"]+)[\'\"]?\)"
         pattern_destroy = r"(\w+)\.destroy\([\'\"]?([^\'\"]+)[\'\"]?\)"
-        pattern_update_dict = r'(\w+)\.update\([\'"]?([^\'"]+)[\'"]?,\s*({.*})\)'
-        pattern_update_attr = r'(\w+)\.update\((?:[\'\"]?([^",]+)[\'\"]?(?:\s*,\s*[\'\"]?([^",]+)[\'\"]?)?(?:\s*,\s*[\'\"]?([^",]+)[\'\"]?)?)?\)'
+        pattern_update_dict = (
+            r'(\w+)\.update\([\'"]?([^\'"]+)[\'"]?,\s*({.*})\)'
+        )
+        pattern_update_attr = (
+            r'(\w+)\.update\('
+            r'(?:[\'\"]?([^",]+)[\'\"]?'
+            r'(?:\s*,\s*[\'\"]?([^",]+)[\'\"]?)?'
+            r'(?:\s*,\s*[\'\"]?([^",]+)[\'\"]?)?)?'
+            r'\)'
+        )
 
         match_all = re.match(pattern_all, line)
         match_count = re.match(pattern_count, line)
@@ -160,24 +181,40 @@ class HBNBCommand(cmd.Cmd):
             instance_id = match_destroy.group(2)
             self.do_destroy("{} {}".format(class_name, instance_id))
 
-
         elif match_update_dict:
             class_name = match_update_dict.group(1)
             instance_id = match_update_dict.group(2)
             dict_representation = match_update_dict.group(3)
-            self.do_update("{} {} {}".format(class_name, instance_id, dict_representation))
-
+            self.do_update(
+                "{} {} {}".format(class_name, instance_id, dict_representation)
+            )
 
         elif match_update_attr:
             class_name = match_update_attr.group(1)
-            instance_id = match_update_attr.group(2) if match_update_attr.group(2) else ""
-            attribute_name = match_update_attr.group(3) if match_update_attr.group(3) else ""
-            attribute_value = match_update_attr.group(4) if match_update_attr.group(4) else ""
-            self.do_update("{} {} {} {}".format(class_name, instance_id, attribute_name, attribute_value))
-
+            instance_id = (
+                match_update_attr.group(2)
+                if match_update_attr.group(2)
+                else ""
+            )
+            attribute_name = (
+                match_update_attr.group(3)
+                if match_update_attr.group(3)
+                else ""
+            )
+            attribute_value = (
+                match_update_attr.group(4)
+                if match_update_attr.group(4)
+                else ""
+            )
+            self.do_update(
+                "{} {} {} {}".format(
+                    class_name, instance_id, attribute_name, attribute_value
+                )
+            )
 
         else:
             print("** Unknown syntax: {} **".format(line))
+
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
