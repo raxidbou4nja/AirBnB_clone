@@ -143,8 +143,10 @@ class HBNBCommand(cmd.Cmd):
                         )
                     instance.save()
                 else:
-                    print("** attribute '{}' cannot be updated **".format(attribute))
-
+                    print(
+                        "** attribute '{}' cannot be updated **"
+                        .format(attribute)
+                        )
 
     def default(self, line):
         pattern_all = r"(\w+)\.all\(\)"
