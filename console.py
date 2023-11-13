@@ -125,27 +125,26 @@ class HBNBCommand(cmd.Cmd):
         else:
             key = "{}.{}".format(args[0], args[1])
             instance = models.storage.all()[key]
-            attribute = args[2]
 
-            value = args[3]
-            if value[0] == '"' and value[-1] == '"':
-                value = value[1:-1]
+            attribute_values = dict(zip(args[2::2], args[3::2]))
 
-            if attribute not in ['id', 'created_at', 'updated_at']:
-                if not hasattr(instance, attribute):
-                    setattr(instance, attribute, None)
+            for attribute, value in attribute_values.items():
+                if attribute not in ['id', 'created_at', 'updated_at']:
+                    if not hasattr(instance, attribute):
+                        setattr(instance, attribute, None)
 
-                if getattr(instance, attribute) is None:
-                    setattr(instance, attribute, value)
+                    if getattr(instance, attribute) is None:
+                        setattr(instance, attribute, value)
+                    else:
+                        setattr(
+                            instance,
+                            attribute,
+                            type(getattr(instance, attribute))(value)
+                        )
+                    instance.save()
                 else:
-                    setattr(
-                        instance,
-                        attribute,
-                        type(getattr(instance, attribute))(value)
-                    )
-                instance.save()
-            else:
-                print("** attribute cannot be updated **")
+                    print("** attribute '{}' cannot be updated **".format(attribute))
+
 
     def default(self, line):
         pattern_all = r"(\w+)\.all\(\)"
@@ -202,11 +201,8 @@ class HBNBCommand(cmd.Cmd):
                 )
                 return
 
-            first_key, first_value = next(iter(attribute_dict.items()))
-            new_dict = {first_key: first_value}
-            print("{}".format(new_dict))
             self.do_update(
-                "{} {} {}".format(class_name, instance_id, new_dict)
+                "{} {} {}".format(class_name, instance_id, attribute_dict)
             )
 
         elif match_update_attr:
