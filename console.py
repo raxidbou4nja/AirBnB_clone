@@ -202,8 +202,11 @@ class HBNBCommand(cmd.Cmd):
                 )
                 return
 
+            first_key, first_value = next(iter(attribute_dict.items()))
+            new_dict = {first_key: first_value}
+            print("{}".format(new_dict))
             self.do_update(
-                "{} {} {}".format(class_name, instance_id, attribute_dict)
+                "{} {} {}".format(class_name, instance_id, new_dict)
             )
 
         elif match_update_attr:
