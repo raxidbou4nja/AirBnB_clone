@@ -48,8 +48,12 @@ class BaseModel:
             models.storage.new(self)
 
     def __str__(self):
+        cleaned_dc = {
+            str(key).strip("{}':"): str(value).strip("{}'")
+            for key, value in self.__dict__.items()
+        }
         return "[{}] ({}) {}".format(
-            self.__class__.__name__, self.id, self.__dict__
+            self.__class__.__name__, self.id, cleaned_dc
         )
 
     def save(self):

@@ -23,6 +23,7 @@ import models
 from models.base_model import BaseModel
 import datetime
 import re
+import ast
 
 
 class HBNBCommand(cmd.Cmd):
@@ -191,8 +192,18 @@ class HBNBCommand(cmd.Cmd):
             class_name = match_update_dict.group(1)
             instance_id = match_update_dict.group(2)
             dict_representation = match_update_dict.group(3)
+
+            try:
+                attribute_dict = ast.literal_eval(dict_representation)
+            except ValueError:
+                print(
+                    "** Invalid dictionary format: {} **"
+                    .format(dict_representation)
+                )
+                return
+
             self.do_update(
-                "{} {} {}".format(class_name, instance_id, dict_representation)
+                "{} {} {}".format(class_name, instance_id, attribute_dict)
             )
 
         elif match_update_attr:

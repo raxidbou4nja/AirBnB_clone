@@ -131,5 +131,6 @@ class TestFileStorage(unittest.TestCase):
         result = "OK" if self.file_storage._FileStorage__objects else ""
         self.assertEqual(result, "OK")
 
+
 if __name__ == '__main__':
     unittest.main()
