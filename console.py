@@ -129,18 +129,22 @@ class HBNBCommand(cmd.Cmd):
             value = args[3]
             if value[0] == '"' and value[-1] == '"':
                 value = value[1:-1]
-            if (
-                hasattr(instance, attribute) and
-                attribute not in ['id', 'created_at', 'updated_at']
-            ):
-                setattr(
-                    instance,
-                    attribute,
-                    type(getattr(instance, attribute))(value)
-                )
+
+            if attribute not in ['id', 'created_at', 'updated_at']:
+                if not hasattr(instance, attribute):
+                    setattr(instance, attribute, None)
+
+                if getattr(instance, attribute) is None:
+                    setattr(instance, attribute, value)
+                else:
+                    setattr(
+                        instance,
+                        attribute,
+                        type(getattr(instance, attribute))(value)
+                    )
                 instance.save()
             else:
-                print("** attribute doesn't exist or cannot be updated **")
+                print("** attribute cannot be updated **")
 
     def default(self, line):
         pattern_all = r"(\w+)\.all\(\)"
