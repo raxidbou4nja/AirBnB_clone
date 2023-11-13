@@ -116,6 +116,20 @@ class TestFileStorage(unittest.TestCase):
         all_objects = new_storage.all()
         self.assertIn('Review.{}'.format(review.id), all_objects)
 
+    def test_file_path(self):
+        file_path = self.file_storage._FileStorage__file_path
+        self.assertEqual(file_path, "file.json")
+
+    def test_objects_attribute(self):
+        objects = self.file_storage._FileStorage__objects
+        self.assertGreater(len(objects), 1)
+
+    def test_reload_method(self):
+        self.file_storage.new(BaseModel())
+        self.file_storage.save()
+        self.file_storage.reload()
+        result = "OK" if self.file_storage._FileStorage__objects else ""
+        self.assertEqual(result, "OK")
 
 if __name__ == '__main__':
     unittest.main()
