@@ -45,6 +45,11 @@ class TestBaseModel(unittest.TestCase):
         self.assertIn('created_at', objM_dc)
         self.assertIn('updated_at', objM_dc)
 
+    def test_str(self):
+        objM = BaseModel()
+        str_representation = str(objM)
+        expected_representation = "[BaseModel] ({}) {}".format(objM.id, objM.__dict__)
+        self.assertEqual(str_representation, expected_representation)
 
 if __name__ == '__main__':
     unittest.main()
