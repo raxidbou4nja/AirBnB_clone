@@ -46,12 +46,24 @@ class TestBaseModel(unittest.TestCase):
         self.assertIn('updated_at', objM_dc)
 
     def test_str(self):
-        objM = BaseModel()
-        str_representation = str(objM)
-        expected_representation = "[BaseModel] ({}) {}"
-        .format(objM.id, objM.__dict__)
-        self.assertEqual(str_representation, expected_representation)
+        # Create a BaseModel with known values
+        created_at = datetime(2023, 11, 14, 0, 0, 0)
+        updated_at = datetime(2023, 11, 14, 0, 1, 0)
+        objM = BaseModel(created_at=created_at, updated_at=updated_at)
 
+        # Get the string representation
+        str_representation = str(objM)
+
+        # Manually format the expected representation with the correct datetime format
+        expected_representation = "[BaseModel] ({}) {{'updated_at': '{}', 'created_at': '{}', 'id': '{}'}}".format(
+            objM.id,
+            updated_at.strftime('%Y-%m-%d %H:%M:%S'),
+            created_at.strftime('%Y-%m-%d %H:%M:%S'),
+            objM.id
+        )
+
+        # Assert that the actual and expected representations match
+        self.assertEqual(str_representation, expected_representation)
 
 if __name__ == '__main__':
     unittest.main()
